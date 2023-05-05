@@ -10,6 +10,7 @@
 
 
 
+
 export default function getUsers(page) {
     const url = new URL('https://6454e366f803f34576340089.mockapi.io/user');
     url.searchParams.append('page', page);
