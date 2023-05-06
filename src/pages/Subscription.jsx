@@ -1,45 +1,116 @@
 import Users from "../components/Users"
 import { useEffect, useState } from "react"
-import getUsers from "../utils/mockAPI/getUsers";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFollowers } from "../redux/mockAPI/getFollowers";
 import css from "./Sub.module.css";
 
 
+
 export default function Subscription() {
-    const [users, setUsers] = useState([]);
+    const users = useSelector(state => state.follower.items);
+    const isLoading = useSelector(state => state.follower.isLoading);
     const [page, setPage] = useState(1);
-       
+    const dispatch = useDispatch();   
+ 
+
     useEffect(() => {
-        getUsers(1)
-        .then(user => setUsers(user));     
-     },[]);
-    
-    const addUsers = () => {
-        setPage(prev => prev + 1);
-    }
+        dispatch(fetchFollowers(1))
+     },[dispatch]);
+
 
     useEffect(() => {
         if (page > 1) {
-            getUsers(page)
-            .then(resp => {
-            setUsers(prev => [...prev, ...resp]);
-            });
+            dispatch(fetchFollowers(page))
         }
-    }, [page]);
+    }, [dispatch, page]);
+
+
+
     
-    console.log(page);
+    const onFollowUser = (e) => {
+        console.log(e);
+    }
+   
     console.log(users);
 
 
-    
     return (
         <>
-        <ul>
-        <Users users={users} />
-        </ul>    
-        <button
-        onClick={addUsers}
+        <ul> 
+        <Users
+        users={users}
+        onFollowUser={onFollowUser}        
+        />        
+        </ul>
+        {users.length === 13
+        ? <></>
+        :  <button
+        onClick={() => setPage(prev => prev + 1)}
         className={css.loadMoreBtn}>
-        Load more
-        </button>    
+        {isLoading
+        ? <span>Loading...</span>
+        : <span>Load More</span>}        
+        </button>              
+        }     
      </>)
 }
+
+
+
+
+
+
+
+
+
+
+
+// import Users from "../components/Users"
+// import { useEffect, useState } from "react"
+// import getUsers from "../utils/mockAPI/getUsers";
+// import css from "./Sub.module.css";
+
+
+// export default function Subscription() {
+//     const [users, setUsers] = useState([]);
+//     const [page, setPage] = useState(1);
+       
+//     useEffect(() => {
+//         getUsers(1)
+//         .then(user => setUsers(user));     
+//      },[]);
+    
+//     const addUsers = () => {
+//         setPage(prev => prev + 1);
+//     }
+
+//     useEffect(() => {
+//         if (page > 1) {
+//             getUsers(page)
+//             .then(resp => {
+//             setUsers(prev => [...prev, ...resp]);
+//             });
+//         }
+//     }, [page]);
+    
+//     const onFollowUser = (e) => {
+//         console.log(e);
+//     }
+
+
+    
+//     return (
+//         <>
+//         <ul>
+//         <Users
+//         users={users}
+//         onFollowUser={onFollowUser}            
+//         />
+//         </ul>    
+//         <button
+//         onClick={addUsers}
+//         className={css.loadMoreBtn}>
+//         Load more
+//         </button>    
+//      </>)
+// }
