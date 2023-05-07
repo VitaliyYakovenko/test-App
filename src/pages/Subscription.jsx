@@ -1,7 +1,7 @@
-import Users from "../components/Users"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFollowers } from "../redux/mockAPI/getFollowers";
+import Users from "../components/Users"
 import css from "./Sub.module.css";
 
 
@@ -11,7 +11,6 @@ export default function Subscription() {
     const isLoading = useSelector(state => state.follower.isLoading);
     const [page, setPage] = useState(1);
     const dispatch = useDispatch();   
- 
 
     useEffect(() => {
         dispatch(fetchFollowers(1))
@@ -26,20 +25,12 @@ export default function Subscription() {
 
 
 
-    
-    const onFollowUser = (e) => {
-        console.log(e);
-    }
-   
-    console.log(users);
-
 
     return (
         <>
         <ul> 
         <Users
-        users={users}
-        onFollowUser={onFollowUser}        
+        users={users}      
         />        
         </ul>
         {users.length === 13
