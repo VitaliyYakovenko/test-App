@@ -104,6 +104,7 @@
 .btnFollow {
     min-width: 196px;
     min-height: 50px;
+    border: none;
 
     cursor: pointer;
     color: #373737;
